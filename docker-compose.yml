@@ -1,0 +1,67 @@
+services:
+
+  # =========================
+  # AUTH DATABASE
+  # =========================
+  auth-mysql:
+    image: mysql:8
+    container_name: auth-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: authdb
+    ports:
+      - "3307:3306"
+    volumes:
+      - auth-db-data:/var/lib/mysql
+
+  # =========================
+  # PRODUCT DATABASE
+  # =========================
+  product-mysql:
+    image: mysql:8
+    container_name: product-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: productdb
+    ports:
+      - "3308:3306"
+    volumes:
+      - product-db-data:/var/lib/mysql
+
+  # =========================
+  # AUTH SERVICE
+  # =========================
+  auth-service:
+    build: ./AuthService
+    container_name: auth-service
+    ports:
+      - "5001:5001"
+    depends_on:
+      - auth-mysql
+
+  # =========================
+  # PRODUCT SERVICE
+  # =========================
+  product-service:
+    build: ./ProductService
+    container_name: product-service
+    ports:
+      - "5002:5002"
+    depends_on:
+      - product-mysql
+
+  # =========================
+  # API GATEWAY
+  # =========================
+  api-gateway:
+    build: ./ApiGateway
+    container_name: api-gateway
+    ports:
+      - "5000:5000"
+    depends_on:
+      - auth-service
+      - product-service
+
+volumes:
+  auth-db-data:
+  product-db-data:
