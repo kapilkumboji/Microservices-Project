@@ -24,11 +24,12 @@ pipeline:
           buildIntelligence:
             enabled: true
           platform:
-            os: Windows
+            os: Linux
             arch: Amd64
           runtime:
             type: Docker
-            spec: {}
+            spec:
+              harnessImageConnectorRef: dock
           execution:
             steps:
               - step:
