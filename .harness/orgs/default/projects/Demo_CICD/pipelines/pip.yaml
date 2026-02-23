@@ -1,0 +1,42 @@
+pipeline:
+  name: pip
+  identifier: pip
+  projectIdentifier: Demo_CICD
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: gitt
+        repoName: Microservices_Project
+        build: <+input>
+  stages:
+    - stage:
+        name: build docker
+        identifier: build_docker
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Docker
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_1
+                  identifier: BuildAndPushDockerRegistry_1
+                  spec:
+                    connectorRef: dock
+                    repo: gatway_image
+                    tags:
+                      - <pat>
