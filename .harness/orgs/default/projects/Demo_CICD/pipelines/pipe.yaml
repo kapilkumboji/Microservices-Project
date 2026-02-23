@@ -12,8 +12,8 @@ pipeline:
         build: <+input>
   stages:
     - stage:
-        name: build
-        identifier: build
+        name: buil
+        identifier: buil
         description: ""
         type: CI
         spec:
@@ -40,4 +40,6 @@ pipeline:
                     connectorRef: dock
                     repo: gateway_image
                     tags:
-                      - <pat>
+                      - linux-amd64
+        tags:
+          linux-amd64: ""
